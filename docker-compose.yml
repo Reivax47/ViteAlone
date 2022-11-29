@@ -1,0 +1,34 @@
+version: '3.4'
+services:
+  front:
+    build:  front
+    container_name: front
+    working_dir: /root/front
+    command: npm run dev
+    ports:
+      - "3000:3000"
+
+
+  caddyerver:
+    image: caddy:latest
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+     
+    volumes:
+      - type: bind
+        source: ./caddy/
+        target: /etc/caddy/
+      - type : bind
+        source: ./caddy_data
+        target: /data
+      - type: bind
+        source : ./caddy_config
+        target : /config  
+          
+networks:
+  default:
+  internal:
+    internal:  true
+
